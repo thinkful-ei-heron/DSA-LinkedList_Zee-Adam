@@ -206,13 +206,15 @@ function main() {
     SLL.find('Athena')
     SLL.find('Hotdog')
     SLL.find('Kat')
+    SLL.insertLast('Test')
     console.log(display(SLL)) // display function
     // console.log(size(SLL)) // size function
     // console.log(isEmpty(SLL)) // isEmpty function
     // console.log(findPrevious(SLL, 'Kat')) // findPrevious function
     // console.log(findLast(SLL)) // findLast function
-    console.log(reverseList(SLL)) // reverseList function
+    // console.log(reverseList(SLL)) // reverseList function
     // console.log(find3rdFromEnd(SLL)) // find3rdFromEnd function
+    console.log(findMiddle(SLL))
 }
 
 console.log(main())
@@ -352,7 +354,14 @@ function findMiddle(list) {
     let count = 0
     while (currNode !== null) {
         count++
+        currNode = currNode.next
     }
+    currNode = list.head
+    console.log(count)
+    for (let i = 0; i < (count / 2) - 1 ; i++) {
+        currNode = currNode.next
+    }
+    return currNode
 }
 
 
@@ -397,9 +406,13 @@ class DoublyLinkedList {
 
     insertFirst(item) {
         //to insert an item into the beginning of a list, set this.head as a new node instance, passing in the item to store and the location
+        
         let node = new _Node(item)
+        node.next = this.head
         this.head = node
-        this.tail = node
+        if (this.tail === null) {
+            this.tail = node
+        }
         console.log(`${this.head.value} was added to the beginning of the list`)
     }
 
@@ -409,15 +422,10 @@ class DoublyLinkedList {
             this.insertFirst(item)
         }
         else {
-            // start at the beginning of the list
-            let tempNode = this.head
-            // loop through the list until you reach the last node, which will have a next pointer of null
-            while (tempNode.next !== null) {
-                tempNode = tempNode.next
-            }
-            // once tempNode is set to the last item of the list, set it's next pointer to the new node instance
-            tempNode.next = new _Node(item, null)
-            console.log(`${tempNode.next.value} was added to the end of the list`)
+            let newNode = new _Node(item, null, this.tail)
+            this.tail.next = newNode
+            this.tail = newNode
+            console.log(`${newNode.value} was added to the end of the list`)
         }
     }
 
@@ -574,6 +582,14 @@ class DoublyLinkedList {
     }
 }
 
+function doubleMain() {
+    let DLL = new DoublyLinkedList()
+    DLL.insertFirst('Hotdog')
+    DLL.insertLast('Frog')
+    return DLL.tail.prev
+}
+
+console.log(doubleMain())
 
 
 
